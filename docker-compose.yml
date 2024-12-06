@@ -1,0 +1,9 @@
+services:
+  csci545_project:
+    image: csci545_project:v3
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/app
+    # command: python app.py

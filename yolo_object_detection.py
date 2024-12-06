@@ -18,16 +18,16 @@ for image in os.listdir(images_dir):
 
 
 # Load the YOLOv11s model
-model = YOLO('yolov11s.pt')
+model = YOLO('yolov10s.pt')
 
 results = model(images)
 
 # Process results list
-for result in results:
+for i, result in enumerate(results):
     boxes = result.boxes  # Boxes object for bounding box outputs
     masks = result.masks  # Masks object for segmentation masks outputs
     # keypoints = result.keypoints  # Keypoints object for pose outputs
     probs = result.probs  # Probs object for classification outputs
     obb = result.obb  # Oriented boxes object for OBB outputs
     result.show()  # display to screen
-    result.save(filename="result.jpg")  # save to disk
+    result.save(filename=f"result{i}.jpg")  # save to disk
