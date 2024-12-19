@@ -14,7 +14,7 @@ camera_matrix = calibration_data["camera_matrix"]
 dist_coeffs = calibration_data["dist_coeffs"]
 
 # Load the YOLO model
-model = YOLO('yolov10s.pt')  # Adjust model name if needed
+model = YOLO('YOLO_models/yolov10s.pt') 
 
 # Load the captured image
 image_path = "captured_image.png"
@@ -25,16 +25,11 @@ h, w = image.shape[:2]
 new_camera_matrix, roi = cv2.getOptimalNewCameraMatrix(camera_matrix, dist_coeffs, (w, h), 1, (w, h))
 undistorted_image = cv2.undistort(image, camera_matrix, dist_coeffs, None, new_camera_matrix)
 
-# Crop the image (if needed, based on region of interest)
-x, y, w, h = roi
-undistorted_image = undistorted_image[y:y+h, x:x+w]
-
 # Run the YOLO model on the undistorted image
 results = model(undistorted_image)
 
-# Define the class labels and specify the classes of interest
 class_labels = model.names
-target_classes = ["bottle", "can", "cup"]
+target_classes = ["bottle", "can", "cup"]   # Can add any other desired objects
 
 # Load or define the distance calculation coefficient
 distance_coefficient = None
@@ -46,11 +41,13 @@ if args.mode == 'use':
     except FileNotFoundError:
         print("Distance calculation coefficient not found. Please run in 'calibrate' mode first.")
         exit()
+        
+    H_real = float(input("Enter the known height of the object (in mm): "))
 
-# Known dimensions and distance for calibration (in mm)
-H_real = 106  # Known height of the object
-W_real = 50   # Known width of the object
-D_real = 400  # Known distance from camera to object
+elif args.mode == 'calibrate':
+    H_real = float(input("Enter the known height of the object (in mm): "))
+    W_real = float(input("Enter the known width of the object (in mm): "))
+    D_real = float(input("Enter the known distance from the camera to the object (in mm): "))
 
 # Process results for each detected object
 for i, result in enumerate(results):
@@ -60,9 +57,9 @@ for i, result in enumerate(results):
         class_id = int(box.cls[0])
         class_name = class_labels[class_id]
 
-        # Only process target classes (e.g., bottle, can, cup)
+        # Only process target classes
         if class_name in target_classes:
-            # Get bounding box coordinates
+           
             x1, y1, x2, y2 = map(int, box.xyxy[0])
 
             # Calculate the height and width of the object in the image in pixels
@@ -106,8 +103,9 @@ for i, result in enumerate(results):
             center_y = (y1 + y2) // 2
 
             # Using the undistorted coordinates to calculate X_c and Y_c
-            X_c = (center_x - camera_matrix[0, 2]) * Z_c / camera_matrix[0, 0]
-            Y_c = (center_y - camera_matrix[1, 2]) * Z_c / camera_matrix[1, 1]
+            X_c = (center_x - new_camera_matrix[0, 2]) * Z_c / new_camera_matrix[0, 0]
+            Y_c = (center_y - new_camera_matrix[1, 2]) * Z_c / new_camera_matrix[1, 1]
+
 
             # Store the coordinates of the object in the camera frame
             camera_coordinates = np.array([X_c, Y_c, Z_c])
@@ -124,5 +122,4 @@ for i, result in enumerate(results):
     # Save the filtered results for review
     cv2.imwrite(f"filtered_result_{i}.jpg", undistorted_image)
 
-# Close the window
 cv2.destroyAllWindows()

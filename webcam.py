@@ -1,8 +1,7 @@
 import cv2
 
 # Initialize the webcam
-cap = cv2.VideoCapture(0)  # '0' is usually the default camera
-# cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
+cap = cv2.VideoCapture(0)
 
 if not cap.isOpened():
     print("Error: Could not open webcam.")
@@ -19,6 +18,5 @@ if ret:
 else:
     print("Error: Could not read frame from webcam.")
 
-# Release the webcam and close any OpenCV windows
+# Release the webcam
 cap.release()
-cv2.destroyAllWindows()
