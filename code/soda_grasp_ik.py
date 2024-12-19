@@ -25,7 +25,7 @@ def createBw():
     Bw[2, :] = [0, 0]  # z tolerance
     Bw[3, :] = [0.0, 0.0]  # Roll tolerance
     Bw[4, :] = [0.0, 0.0]  # Pitch tolerance
-    Bw[5, :] = [-np.pi / 2, np.pi / 2]  # Yaw tolerance
+    Bw[5, :] = [-np.pi / 2, 0 ]  # Yaw tolerance
     ###
     return Bw
 
@@ -160,11 +160,12 @@ def main(if_sim):
     # soda_pose = np.eye(4)
     # soda_pose[0, 3] = 0.25
     # soda_pose[1, 3] = -0.35
-    # Enter object position
+
+    # Enter object position (TO BE FILLED IN)
     soda_pose = np.eye(4)
-    soda_pose[0, 3] =       # X_w
-    soda_pose[1, 3] =       # Y_w
-    # soda_pose[2, 3] =       # Z_w
+    soda_pose[0, 3] =  0     # X_w
+    soda_pose[1, 3] =  0     # Y_w
+    # soda_pose[2, 3] =   0    # Z_w
     sodaURDFUri = "package://pr_assets/data/objects/can.urdf"
     soda = world.add_body_from_urdf_matrix(sodaURDFUri, soda_pose)
 
