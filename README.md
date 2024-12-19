@@ -59,7 +59,7 @@ In addition a `calibration_data.npz` file will be outputed and will be used late
 
 Set up the camera and robotic arm on a workbench and record the pose.
 
-Below is a depiction of how my setup looked like in lab: ![My Setup](report_images/setup.png)
+Below is a depiction of how my setup looked like in lab: ![My Setup in Lab](report_images/setup.png)
 
 ### Step 4: Calibrate object_loactor for distance measurement
 
@@ -122,3 +122,19 @@ roscore
 
 rviz rviz
 ```
+
+## Example Run
+
+Video Link: [Screen Recording Video](https://usc.zoom.us/rec/share/8iOnjz8pf3tp2Ir9tbHLeMWSlGQQ0_TB0Gl8JY5L8_kWQAb_jz957boexuY03Bjb.9_UPfonWwbQ5BPmz?startTime=1734568121000)
+
+Photos of setup used in the video:
+
+Calibration: ![My calibration setup](report_images/calibration_setup.jpg)
+
+New random position: ![My calibration setup](report_images/new_position.jpg)
+
+Coordinates of camera with repect to world base: `[0.3, 0.02, 0.04]` in m
+
+Camera oreintation with repect to world base: `[0, 0, 90]` in degrees
+
+Dimension of my bottle: `height=105mm`, `width=45`
